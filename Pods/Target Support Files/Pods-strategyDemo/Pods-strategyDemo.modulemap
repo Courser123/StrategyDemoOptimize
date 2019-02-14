@@ -1,0 +1,6 @@
+module Pods_strategyDemo {
+  umbrella header "Pods-strategyDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}
