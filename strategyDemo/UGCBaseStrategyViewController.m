@@ -42,12 +42,15 @@
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.estimatedRowHeight = 0;
-    self.tableView.estimatedSectionHeaderHeight = 0;
-    self.tableView.estimatedSectionFooterHeight = 0;
     self.tableView.contentSize = CGSizeMake(0, 10000);
     self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = self.tableFooterView;
+    
+    // iOS 11以后这样设置
+    self.tableView.estimatedRowHeight = 0;
+    self.tableView.estimatedSectionHeaderHeight = 0;
+    self.tableView.estimatedSectionFooterHeight = 0;
+    
     [self.view addSubview:self.tableView];
     
     [self setupNavigationBar];
@@ -165,18 +168,41 @@
             viewModel.nextViewModel = [self.dataSource objectAtIndex:(indexPath.item + 1)];
         }
         
-        viewModel.blendDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull lastViewModel, UGCBaseStrategyViewModel * _Nonnull currentViewModel) {
-            NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
-            [tempArr replaceObjectAtIndex:(index - 1) withObject:lastViewModel];
-            [tempArr removeObjectAtIndex:index];
-            weakSelf.dataSource = tempArr.mutableCopy;
-            [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [weakSelf.tableView reloadData];
-            UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:weakSelf.currentIndex - 1 inSection:0]];
-            [cell.textView becomeFirstResponder];
+        viewModel.blendDataSource = ^(NSInteger index, NSRange selectedRange, UGCBaseStrategyViewModel * _Nonnull lastViewModel, UGCBaseStrategyViewModel * _Nonnull currentViewModel) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
+                [tempArr replaceObjectAtIndex:(index - 1) withObject:lastViewModel];
+                [tempArr removeObjectAtIndex:index];
+                weakSelf.dataSource = tempArr.mutableCopy;
+                [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                //            [weakSelf.tableView reloadData];
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf.tableView setNeedsLayout];
+                [weakSelf.tableView layoutIfNeeded];
+                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index - 1 inSection:0]];
+                [cell.textView becomeFirstResponder];
+                cell.textView.selectedRange = selectedRange;
+            });
         };
         
-        viewModel.splitDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
+        viewModel.splitDataSource = ^(NSInteger index, NSRange selectedRange, UGCBaseStrategyViewModel * _Nonnull currentViewModel, UGCBaseStrategyViewModel * _Nonnull nextViewModel) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
+                [tempArr replaceObjectAtIndex:index withObject:currentViewModel];
+                [tempArr insertObject:nextViewModel atIndex:(index + 1)];
+                weakSelf.dataSource = tempArr.mutableCopy;
+                [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                //            [weakSelf.tableView reloadData];
+                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0],[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [weakSelf.tableView setNeedsLayout];
+                [weakSelf.tableView layoutIfNeeded]; // 防止visiableCells不正确
+                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index + 1 inSection:0]];
+                [cell.textView becomeFirstResponder];
+                cell.textView.selectedRange = selectedRange;
+            });
+        };
+        
+        viewModel.addPicDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
             NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
             [tempArr replaceObjectAtIndex:index withObject:firstModel];
             [tempArr insertObject:insertModel atIndex:(index + 1)];

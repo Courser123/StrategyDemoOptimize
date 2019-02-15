@@ -36,24 +36,11 @@
         self.textView.textColor = [UIColor blueColor];
         __weak typeof(self) weakSelf = self;
         self.textView.deleteBackwardCallBack = ^{
-            
-            CGRect cursorRect;
-            
-            if (weakSelf.textView.selectedTextRange) {
-                
-                cursorRect = [weakSelf.textView caretRectForPosition:weakSelf.textView.selectedTextRange.start];
-                
-            } else {
-                
-                cursorRect = CGRectZero;
-            }
-            
-            if (cursorRect.origin.x < 5 && cursorRect.origin.y < cursorRect.size.height) {
+            if (weakSelf.textView.selectedRange.location == 0 && weakSelf.textView.selectedRange.length == 0) {
                 if (weakSelf.viewModel.blendContent) {
                     weakSelf.viewModel.blendContent(weakSelf.index, weakSelf.viewModel.lastViewModel, weakSelf.viewModel);
                 }
             }
-            
         };
         [self.contentView addSubview:self.textView];
         self.currentLineNum = 1; //默认文本框显示一行文字
@@ -71,9 +58,16 @@
 - (void)setViewModel:(UGCBaseStrategyViewModel *)viewModel {
     _viewModel = viewModel;
     self.textView.text = viewModel.model.content;
-//    self.dispose = [[self.textView rac_textSignal] subscribeNext:^(NSString * _Nullable x) {
-//        viewModel.model.content = x;
-//    }];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        if (self.viewModel.splitContent) {
+            self.viewModel.splitContent(self.index, self.textView.selectedRange);
+        }
+        return YES;//这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    return YES;
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
@@ -95,15 +89,8 @@
     
     self.viewModel.model.content = textView.text;
     
-//    if (self.lastCursorRect.origin.x == 0 && self.lastCursorRect.origin.y == 0 && cursorRect.origin.x == 0 && cursorRect.origin.y == 0) {
-//        if (self.viewModel.blendContent) {
-//            self.viewModel.blendContent(self.index, self.viewModel.lastViewModel, self.viewModel);
-//        }
-//    }
-//
-//    self.lastCursorRect = cursorRect;
-//
     if (self.viewModel.getCursorRect) {
+        
         CGRect cursorRect;
         
         if (textView.selectedTextRange) {
@@ -120,9 +107,8 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"UGCBaseStrategyCell scrollViewDidScroll");
+    
 }
-
 
 - (void)layoutSubviews {
     [super layoutSubviews];
