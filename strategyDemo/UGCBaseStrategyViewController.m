@@ -60,7 +60,7 @@
     
     // fake data
     self.dataSource = [UGCFakeData new].modelList.mutableCopy;
-//    self.tableView.editing = YES;
+    //    self.tableView.editing = YES;
 }
 
 - (void)setupNavigationBar {
@@ -83,11 +83,11 @@
 - (void)keyboardWillShow:(NSNotification *)noti {
     self.keyboardShowed = YES;
     CGRect rect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self.tableView beginUpdates];
-    CGRect footerViewFrame = self.tableFooterView.frame;
-    footerViewFrame.size.height = rect.size.height;
-    self.tableFooterView.frame = footerViewFrame;
-    [self.tableView endUpdates];
+//    [self.tableView beginUpdates];
+//    CGRect footerViewFrame = self.tableFooterView.frame;
+//    footerViewFrame.size.height = rect.size.height;
+//    self.tableFooterView.frame = footerViewFrame;
+//    [self.tableView endUpdates];
     
     UGCBaseStrategyCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
     
@@ -118,9 +118,9 @@
             [self.tableView setContentOffset:contentOffset animated:YES];
             self.scrollDistance = 0;
         }
-        [self.tableView beginUpdates];
-        self.tableFooterView.frame = CGRectZero;
-        [self.tableView endUpdates];
+//        [self.tableView beginUpdates];
+//        self.tableFooterView.frame = CGRectZero;
+//        [self.tableView endUpdates];
     }
 }
 
@@ -135,6 +135,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (self.dataSource.count == 1 && [self.dataSource objectAtIndex:0].model.height < self.tableView.bounds.size.height) {
+        return self.tableView.bounds.size.height;
+    }
     if ([self.dataSource objectAtIndex:indexPath.item].model.height) {
         return [self.dataSource objectAtIndex:indexPath.item].model.height;
     }
@@ -174,14 +177,14 @@
                 [tempArr replaceObjectAtIndex:(index - 1) withObject:lastViewModel];
                 [tempArr removeObjectAtIndex:index];
                 weakSelf.dataSource = tempArr.mutableCopy;
-                [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-                //            [weakSelf.tableView reloadData];
-                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [weakSelf.tableView setNeedsLayout];
-                [weakSelf.tableView layoutIfNeeded];
-                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index - 1 inSection:0]];
-                [cell.textView becomeFirstResponder];
-                cell.textView.selectedRange = selectedRange;
+//                [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                //            [weakSelf.tableView reloadData];
+//                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                [weakSelf.tableView setNeedsLayout];
+//                [weakSelf.tableView layoutIfNeeded];
+//                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index - 1 inSection:0]];
+//                [cell.textView becomeFirstResponder];
+//                cell.textView.selectedRange = selectedRange;
             });
         };
         
@@ -191,14 +194,14 @@
                 [tempArr replaceObjectAtIndex:index withObject:currentViewModel];
                 [tempArr insertObject:nextViewModel atIndex:(index + 1)];
                 weakSelf.dataSource = tempArr.mutableCopy;
-                [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-                //            [weakSelf.tableView reloadData];
-                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0],[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [weakSelf.tableView setNeedsLayout];
-                [weakSelf.tableView layoutIfNeeded]; // 防止visiableCells不正确
-                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index + 1 inSection:0]];
-                [cell.textView becomeFirstResponder];
-                cell.textView.selectedRange = selectedRange;
+//                [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                //            [weakSelf.tableView reloadData];
+//                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0],[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                [weakSelf.tableView setNeedsLayout];
+//                [weakSelf.tableView layoutIfNeeded]; // 防止visiableCells不正确
+//                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index + 1 inSection:0]];
+//                [cell.textView becomeFirstResponder];
+//                cell.textView.selectedRange = selectedRange;
             });
         };
         
