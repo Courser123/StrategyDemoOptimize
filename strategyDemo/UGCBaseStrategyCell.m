@@ -17,7 +17,6 @@
 @property (nonatomic, assign) BOOL isFirstResponder;
 @property (nonatomic, assign) float currentLineNum;
 @property (nonatomic, assign) BOOL hasRemovedObserver;
-@property (nonatomic, strong) RACDisposable *dispose;
 
 @end
 
@@ -35,6 +34,27 @@
         self.textView.font = [UIFont systemFontOfSize:textFontSize];
         self.textView.delegate = self;
         self.textView.textColor = [UIColor blueColor];
+        __weak typeof(self) weakSelf = self;
+        self.textView.deleteBackwardCallBack = ^{
+            
+            CGRect cursorRect;
+            
+            if (weakSelf.textView.selectedTextRange) {
+                
+                cursorRect = [weakSelf.textView caretRectForPosition:weakSelf.textView.selectedTextRange.start];
+                
+            } else {
+                
+                cursorRect = CGRectZero;
+            }
+            
+            if (cursorRect.origin.x < 5 && cursorRect.origin.y < cursorRect.size.height) {
+                if (weakSelf.viewModel.blendContent) {
+                    weakSelf.viewModel.blendContent(weakSelf.index, weakSelf.viewModel.lastViewModel, weakSelf.viewModel);
+                }
+            }
+            
+        };
         [self.contentView addSubview:self.textView];
         self.currentLineNum = 1; //默认文本框显示一行文字
         self.hasRemovedObserver = NO;
@@ -44,7 +64,6 @@
 
 - (void)prepareForReuse {
     [super prepareForReuse];
-    [self.dispose dispose];
     self.textView.text = @"test";
     self.viewModel = [UGCBaseStrategyViewModel new];
 }
@@ -76,6 +95,14 @@
     
     self.viewModel.model.content = textView.text;
     
+//    if (self.lastCursorRect.origin.x == 0 && self.lastCursorRect.origin.y == 0 && cursorRect.origin.x == 0 && cursorRect.origin.y == 0) {
+//        if (self.viewModel.blendContent) {
+//            self.viewModel.blendContent(self.index, self.viewModel.lastViewModel, self.viewModel);
+//        }
+//    }
+//
+//    self.lastCursorRect = cursorRect;
+//
     if (self.viewModel.getCursorRect) {
         CGRect cursorRect;
         

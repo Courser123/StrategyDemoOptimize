@@ -13,19 +13,37 @@
 - (instancetype)initWithStrategyModel:(UGCBaseStrategyModel *)model {
     if (self = [super init]) {
         self.model = model;
-        [self addPicMethod];
     }
     return self;
 }
 
 - (void)setModel:(UGCBaseStrategyModel *)model {
     _model = model;
-    [self addPicMethod];
+    [self _blendContent];
+    [self _addPic];
 }
 
-- (void)addPicMethod {
+- (void)_blendContent {
     __weak typeof(self) weakSelf = self;
-    
+    self.blendContent = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull lastViewModel, UGCBaseStrategyViewModel * _Nonnull currentViewModel) {
+        
+        if (!currentViewModel || !lastViewModel) {
+            return;
+        }
+        
+        if ((currentViewModel.model.type == UGCBaseStrategyTypeContent) && (lastViewModel.model.type == currentViewModel.model.type)) {
+            lastViewModel.model.content = [lastViewModel.model.content stringByAppendingString:currentViewModel.model.content];
+        }
+        
+        if (weakSelf.blendDataSource) {
+            weakSelf.blendDataSource(index, lastViewModel, currentViewModel);
+        }
+        
+    };
+}
+
+- (void)_addPic {
+    __weak typeof(self) weakSelf = self;
     self.addPic = ^(NSInteger index, NSRange selectedRange, UIImage * _Nonnull image) {
         UGCBaseStrategyViewModel *fistModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:[UGCBaseStrategyModel new]];
         NSString *firstStr = [weakSelf.model.content substringToIndex:selectedRange.location];
@@ -41,8 +59,8 @@
         lastModel.model.type = UGCBaseStrategyTypeContent;
         lastModel.model.content = lastStr;
         
-        if (weakSelf.updateDataSource) {
-            weakSelf.updateDataSource(index, fistModel, viewModel, lastModel);
+        if (weakSelf.splitDataSource) {
+            weakSelf.splitDataSource(index, fistModel, viewModel, lastModel);
         }
     };
 }

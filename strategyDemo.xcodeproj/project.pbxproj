@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		13077A36220052C6008B8595 /* UGCBaseTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A35220052C6008B8595 /* UGCBaseTableView.m */; };
 		13077A3922007531008B8595 /* UGCPicStrategyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A3822007531008B8595 /* UGCPicStrategyCell.m */; };
 		13077A3B2200764F008B8595 /* 3bc6780bd1b3dffa71463150f3b16bac.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 13077A3A2200764F008B8595 /* 3bc6780bd1b3dffa71463150f3b16bac.jpeg */; };
 		13077A412201421F008B8595 /* UGCFakeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A402201421F008B8595 /* UGCFakeData.m */; };
@@ -26,8 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		13077A34220052C6008B8595 /* UGCBaseTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCBaseTableView.h; sourceTree = "<group>"; };
-		13077A35220052C6008B8595 /* UGCBaseTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseTableView.m; sourceTree = "<group>"; };
 		13077A3722007531008B8595 /* UGCPicStrategyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCPicStrategyCell.h; sourceTree = "<group>"; };
 		13077A3822007531008B8595 /* UGCPicStrategyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCPicStrategyCell.m; sourceTree = "<group>"; };
 		13077A3A2200764F008B8595 /* 3bc6780bd1b3dffa71463150f3b16bac.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3bc6780bd1b3dffa71463150f3b16bac.jpeg; sourceTree = "<group>"; };
@@ -95,8 +92,6 @@
 				134B5A3721FEA927006CC05F /* AppDelegate.m */,
 				134B5A3921FEA927006CC05F /* ViewController.h */,
 				134B5A3A21FEA927006CC05F /* ViewController.m */,
-				13077A34220052C6008B8595 /* UGCBaseTableView.h */,
-				13077A35220052C6008B8595 /* UGCBaseTableView.m */,
 				13077A452202A119008B8595 /* UGCBaseStrategyModel.h */,
 				13077A462202A119008B8595 /* UGCBaseStrategyModel.m */,
 				135EF57F2213C04200E63DF8 /* UGCBaseStrategyViewModel.h */,
@@ -235,7 +230,6 @@
 				13077A412201421F008B8595 /* UGCFakeData.m in Sources */,
 				134B5A3B21FEA927006CC05F /* ViewController.m in Sources */,
 				134B5A4621FEA928006CC05F /* main.m in Sources */,
-				13077A36220052C6008B8595 /* UGCBaseTableView.m in Sources */,
 				135EF5812213C04200E63DF8 /* UGCBaseStrategyViewModel.m in Sources */,
 				13077A472202A119008B8595 /* UGCBaseStrategyModel.m in Sources */,
 				134B5A4E21FEA951006CC05F /* UGCBaseStrategyViewController.m in Sources */,

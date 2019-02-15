@@ -157,7 +157,26 @@
         
         cell.viewModel = viewModel;
         
-        viewModel.updateDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
+        if (indexPath.item - 1 >= 0) {
+            viewModel.lastViewModel = [self.dataSource objectAtIndex:(indexPath.item - 1)];
+        }
+        
+        if (indexPath.item + 1 < self.dataSource.count) {
+            viewModel.nextViewModel = [self.dataSource objectAtIndex:(indexPath.item + 1)];
+        }
+        
+        viewModel.blendDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull lastViewModel, UGCBaseStrategyViewModel * _Nonnull currentViewModel) {
+            NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
+            [tempArr replaceObjectAtIndex:(index - 1) withObject:lastViewModel];
+            [tempArr removeObjectAtIndex:index];
+            weakSelf.dataSource = tempArr.mutableCopy;
+            [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [weakSelf.tableView reloadData];
+            UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:weakSelf.currentIndex - 1 inSection:0]];
+            [cell.textView becomeFirstResponder];
+        };
+        
+        viewModel.splitDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
             NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
             [tempArr replaceObjectAtIndex:index withObject:firstModel];
             [tempArr insertObject:insertModel atIndex:(index + 1)];

@@ -20,4 +20,11 @@
     return YES;
 }
 
+- (void)deleteBackward {
+    [super deleteBackward];
+    if (self.deleteBackwardCallBack) {
+        self.deleteBackwardCallBack();
+    }
+}
+
 @end

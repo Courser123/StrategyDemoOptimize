@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UGCBaseStrategyTextView : UITextView
 
+@property (nonatomic, copy) void(^deleteBackwardCallBack)(void);
+
 @end
 
 NS_ASSUME_NONNULL_END

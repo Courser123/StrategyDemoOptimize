@@ -20,13 +20,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UGCBaseStrategyModel *model;
 
+@property (nonatomic, strong) UGCBaseStrategyViewModel *lastViewModel;
+
+@property (nonatomic, strong) UGCBaseStrategyViewModel *nextViewModel;
+
 @property (nonatomic, copy, nullable) void(^getCursorRect)(CGRect cursorRect);
 
 @property (nonatomic, copy) void(^textViewDidBeginEditing)(NSInteger index);
 
+@property (nonatomic, copy) void(^blendContent)(NSInteger index, UGCBaseStrategyViewModel *lastViewModel, UGCBaseStrategyViewModel *currentViewModel);
+
 @property (nonatomic, copy) void(^addPic)(NSInteger index, NSRange selectedRange, UIImage *image);
 
-@property (nonatomic, copy) void(^updateDataSource)(NSInteger index, UGCBaseStrategyViewModel *firstModel, UGCBaseStrategyViewModel *insertModel, UGCBaseStrategyViewModel *lastModel);
+@property (nonatomic, copy) void(^blendDataSource)(NSInteger index, UGCBaseStrategyViewModel *lastViewModel, UGCBaseStrategyViewModel *currentViewModel);
+
+@property (nonatomic, copy) void(^splitDataSource)(NSInteger index, UGCBaseStrategyViewModel *firstModel, UGCBaseStrategyViewModel *insertModel, UGCBaseStrategyViewModel *lastModel);
 
 - (instancetype)initWithStrategyModel:(UGCBaseStrategyModel *)model;
 
