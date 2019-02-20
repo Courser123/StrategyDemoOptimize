@@ -121,8 +121,6 @@
         }
         weakCell.viewModel.getCursorRect = nil;
     };
-    
-//    CGRect frame = [self.tableView convertRect:cell.frame toView:[UIApplication sharedApplication].keyWindow];
 }
 
 - (void)keyboardWillHide:(NSNotification *)noti {
@@ -228,7 +226,6 @@
                     footerViewFrame.size.height += (viewModel.model.height - originHeight);
                     weakSelf.tableFooterView.frame = footerViewFrame;
                     if (weakSelf.keyboardShowed) {
-//                        CGRect frame = [weakSelf.tableView convertRect:weakCell.frame toView:[UIApplication sharedApplication].keyWindow];
                         CGRect cursorRect = [weakCell.textView caretRectForPosition:weakCell.textView.selectedTextRange.start];
                         CGRect frame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, cursorRect.origin.y + cursorRect.size.height) toView:[UIApplication sharedApplication].keyWindow];
                         if ((frame.origin.y + frame.size.height) > weakSelf.keyboardOriginY) {
@@ -249,7 +246,6 @@
                     footerViewFrame.size.height += (viewModel.model.height - originHeight);
                     weakSelf.tableFooterView.frame = footerViewFrame;
                     if (weakSelf.keyboardShowed) {
-//                        CGRect frame = [weakSelf.tableView convertRect:weakCell.frame toView:[UIApplication sharedApplication].keyWindow];
                         CGRect cursorRect = [weakCell.textView caretRectForPosition:weakCell.textView.selectedTextRange.start];
                         CGRect frame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, cursorRect.origin.y + cursorRect.size.height) toView:[UIApplication sharedApplication].keyWindow];
                         if ((frame.origin.y + frame.size.height) > weakSelf.keyboardOriginY) {
