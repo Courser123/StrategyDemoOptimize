@@ -26,7 +26,7 @@
         
         self.sortView = [[UIImageView alloc] initWithFrame:CGRectZero];
         self.sortView.userInteractionEnabled = YES;
-        self.sortView.backgroundColor = [UIColor greenColor];
+        self.sortView.backgroundColor = [UIColor clearColor];
         UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(_longPress:)];
         [self.sortView addGestureRecognizer:longPress];
         [self.contentView addSubview:self.sortView];
