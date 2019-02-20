@@ -49,7 +49,6 @@
     self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = self.tableFooterView;
     
-    // iOS 11以后这样设置
     self.tableView.estimatedRowHeight = 0;
     self.tableView.estimatedSectionHeaderHeight = 0;
     self.tableView.estimatedSectionFooterHeight = 0;
