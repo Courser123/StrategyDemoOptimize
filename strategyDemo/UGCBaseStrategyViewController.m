@@ -203,8 +203,10 @@
             [tempArr insertObject:insertModel atIndex:(index + 1)];
             [tempArr insertObject:lastModel atIndex:(index + 2)];
             weakSelf.dataSource = tempArr.mutableCopy;
-            [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0],[NSIndexPath indexPathForItem:index + 2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0],[NSIndexPath indexPathForItem:index + 2 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [weakSelf.tableView reloadData];
+            [weakSelf.tableView layoutIfNeeded]; // 强制重绘保证下面的代码在reloadData完成后执行
+            [weakSelf.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:index + 1 inSection:0] atScrollPosition:UITableViewScrollPositionNone animated:YES];
         };
         
         viewModel.textViewDidBeginEditing = ^(NSInteger index) {
