@@ -99,11 +99,9 @@
 - (void)keyboardWillShow:(NSNotification *)noti {
     self.keyboardShowed = YES;
     CGRect rect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self.tableView beginUpdates];
     CGRect footerViewFrame = self.tableFooterView.frame;
     footerViewFrame.size.height = rect.size.height;
     self.tableFooterView.frame = footerViewFrame;
-    [self.tableView endUpdates];
     
     UGCContentStrategyCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
     
@@ -132,9 +130,7 @@
             [self.tableView setContentOffset:contentOffset animated:YES];
             self.scrollDistance = 0;
         }
-        [self.tableView beginUpdates];
         self.tableFooterView.frame = CGRectZero;
-        [self.tableView endUpdates];
     }
 }
 

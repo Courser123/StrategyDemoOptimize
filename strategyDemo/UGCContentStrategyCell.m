@@ -24,8 +24,6 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
-        self.showsReorderControl = NO;
         self.textView = [[UGCBaseStrategyTextView alloc] initWithFrame:self.contentView.bounds];
         self.textView.bounces = NO;
         self.textView.font = [UIFont systemFontOfSize:textFontSize];
