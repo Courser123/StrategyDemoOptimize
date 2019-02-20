@@ -88,9 +88,13 @@
                 self.longPressCallBack(self.sortView);
             }
         });
-    }if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
+    }else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
         if (self.restore) {
-            self.restore();
+            self.restore(YES);
+        }
+    }else if (gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
+        if (self.restore) {
+            self.restore(NO);
         }
     }
 }

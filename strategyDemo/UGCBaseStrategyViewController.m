@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UIView *tableFooterView;
 @property (nonatomic, strong) UGCBaseStrategyParseTool *parseTool;
 @property (nonatomic, assign) BOOL isSorting;
+@property (nonatomic, strong) NSIndexPath *proposedDestinationIndexPath;
 
 // test
 @property (nonatomic, strong) NSMutableArray <UGCBaseStrategyViewModel *>*dataSource;
@@ -266,6 +267,8 @@
         
         __weak typeof(cell) weakCell = cell;
         
+        cell.index = indexPath.item;
+        
         [self.dataSource objectAtIndex:indexPath.item].model.height = 200;
         
         cell.sortingState = self.isSorting;
@@ -287,7 +290,10 @@
 
         };
         
-        cell.restore = ^{
+        cell.restore = ^(BOOL changeDataSource) {
+            if (changeDataSource && self.proposedDestinationIndexPath) {
+                [self.dataSource exchangeObjectAtIndex:weakCell.index withObjectAtIndex:self.proposedDestinationIndexPath.row];
+            }
             weakSelf.isSorting = NO;
             weakSelf.dataSource = [weakSelf.parseTool blendDataSource:weakSelf.dataSource.copy].mutableCopy;
             weakSelf.tableFooterView.frame = CGRectZero;
@@ -330,10 +336,15 @@
     return YES;
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+    self.proposedDestinationIndexPath = proposedDestinationIndexPath;
+    return proposedDestinationIndexPath;
+}
+
 // 移动 cell 时触发
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     // 移动cell之后更换数据数组里的循序
-    [self.dataSource exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+    [self.dataSource exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:self.proposedDestinationIndexPath.row];
     self.isSorting = NO;
     self.dataSource = [self.parseTool blendDataSource:self.dataSource.copy].mutableCopy;
     self.tableFooterView.frame = CGRectZero;

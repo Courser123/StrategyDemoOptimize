@@ -10,13 +10,13 @@
 
 @implementation UGCBaseStrategyTableView
 
-- (void) didAddSubview:(UIView *)subview
-{
-    [super didAddSubview:subview];
-    
-    if([subview.class.description isEqualToString:@"UIShadowView"]) {
-        subview.hidden = YES;
-    }
-}
+//- (void)didAddSubview:(UIView *)subview
+//{
+//    [super didAddSubview:subview];
+//
+//    if([subview.class.description isEqualToString:@"UIShadowView"]) {
+//        subview.hidden = YES;
+//    }
+//}
 
 @end

@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UGCBaseStrategyTextView *textView;
 @property (nonatomic, assign, readonly) BOOL isFirstResponder;
-@property (nonatomic, assign) NSInteger index;
 @property (nonatomic, assign) NSRange selectedRange;
 
 - (void)becomeFirstResponder;

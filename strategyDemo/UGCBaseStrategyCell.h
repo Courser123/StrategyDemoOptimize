@@ -14,9 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UGCBaseStrategyCell : UITableViewCell
 
 @property (nonatomic, strong) UGCBaseStrategyViewModel *viewModel;
+@property (nonatomic, assign) NSInteger index;
 
 @property (nonatomic, copy) void(^longPressCallBack)(UIView *sortView);
-@property (nonatomic, copy) void(^restore)(void);
+@property (nonatomic, copy) void(^restore)(BOOL changeDataSource);
 
 @property (nonatomic, assign) BOOL sortingState;
 
