@@ -15,6 +15,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UGCBaseStrategyViewModel *viewModel;
 
+@property (nonatomic, copy) void(^longPressCallBack)(UIView *sortView);
+@property (nonatomic, copy) void(^restore)(void);
+
+@property (nonatomic, assign) BOOL sortingState;
+
+- (CAShapeLayer *)drawImaginaryLineWithRect:(CGRect)rect;
+
 @end
 
 NS_ASSUME_NONNULL_END

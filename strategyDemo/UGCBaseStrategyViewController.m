@@ -182,6 +182,8 @@
         
         __weak typeof(cell) weakCell = cell;
         
+        cell.sortingState = self.isSorting;
+        
         cell.index = indexPath.item;
     
         cell.viewModel = viewModel;
@@ -270,22 +272,30 @@
         
         [self.dataSource objectAtIndex:indexPath.item].model.height = 200;
         
+        cell.sortingState = self.isSorting;
+        
         cell.viewModel = viewModel;
         
-        cell.longPressCallBack = ^(UIImageView * _Nonnull sortView) {
+        cell.longPressCallBack = ^(UIView * _Nonnull sortView) {
             
             CGRect sortingFrame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, sortView.frame.origin.y + sortView.frame.size.height) toView:[UIApplication sharedApplication].keyWindow];
             weakSelf.dataSource = [weakSelf.parseTool splitDataSource:weakSelf.dataSource.copy].mutableCopy;
             weakSelf.isSorting = YES;
             [weakSelf.tableView reloadData];
             [weakSelf.tableView layoutIfNeeded]; // 强制重绘保证下面的代码在reloadData完成后执行
-            weakSelf.isSorting = NO;
             CGRect sortedFrame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, sortView.frame.origin.y + sortView.frame.size.height) toView:[UIApplication sharedApplication].keyWindow];
             CGFloat contentOffSetY = sortedFrame.origin.y + sortedFrame.size.height - sortingFrame.origin.y - sortingFrame.size.height;
             CGPoint contentOffset = weakSelf.tableView.contentOffset;
             contentOffset.y += contentOffSetY;
             [weakSelf.tableView setContentOffset:contentOffset animated:NO];
 
+        };
+        
+        cell.restore = ^{
+            weakSelf.isSorting = NO;
+            weakSelf.dataSource = [weakSelf.parseTool blendDataSource:weakSelf.dataSource.copy].mutableCopy;
+            weakSelf.tableFooterView.frame = CGRectZero;
+            [weakSelf.tableView reloadData];
         };
         
         return cell;
@@ -328,6 +338,7 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     // 移动cell之后更换数据数组里的循序
     [self.dataSource exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+    self.isSorting = NO;
     self.dataSource = [self.parseTool blendDataSource:self.dataSource.copy].mutableCopy;
     self.tableFooterView.frame = CGRectZero;
     [self.tableView reloadData];

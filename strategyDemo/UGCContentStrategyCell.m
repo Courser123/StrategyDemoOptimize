@@ -84,37 +84,10 @@
     
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    
-}
-
 - (void)layoutSubviews {
     [super layoutSubviews];
-    if (self.isEditing) {
-        for (UIView * view in self.subviews) {
-            if ([NSStringFromClass([view class]) rangeOfString:@"Edit"].location != NSNotFound) {
-                view.frame = CGRectZero;
-            }
-            if ([NSStringFromClass([view class]) rangeOfString:@"Content"].location != NSNotFound) {
-                view.frame = self.bounds;
-            }
-        }
-    }
     self.textView.frame = self.contentView.bounds;
     [self.textView scrollRangeToVisible:NSMakeRange(0, 0)];
-}
-
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing: editing animated:YES];
-    if (editing) {
-        for (UIView * view in self.subviews) {
-            if ([NSStringFromClass([view class]) rangeOfString:@"Reorder"].location != NSNotFound) {
-                view.hidden = YES;
-            }
-        }
-    }
-    
 }
 
 - (void)becomeFirstResponder {

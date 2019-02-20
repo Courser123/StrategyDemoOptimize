@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UGCPicStrategyCell : UGCBaseStrategyCell
 
-@property (nonatomic, copy) void(^longPressCallBack)(UIImageView *sortView);
-
 @end
 
 NS_ASSUME_NONNULL_END
