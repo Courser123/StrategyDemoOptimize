@@ -7,7 +7,7 @@
 //
 
 #import "UGCBaseStrategyViewController.h"
-#import "UGCBaseStrategyCell.h"
+#import "UGCContentStrategyCell.h"
 #import "UGCPicStrategyCell.h"
 #import <ReactiveObjC.h>
 #import "UGCBaseStrategyViewModel.h"
@@ -106,7 +106,7 @@
     self.tableFooterView.frame = footerViewFrame;
     [self.tableView endUpdates];
     
-    UGCBaseStrategyCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
+    UGCContentStrategyCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
     
     __weak typeof(cell) weakCell = cell;
     cell.viewModel.getCursorRect = ^(CGRect cursorRect) {
@@ -166,7 +166,7 @@
     if ([self.dataSource objectAtIndex:indexPath.item].model.height) {
         return [self.dataSource objectAtIndex:indexPath.item].model.height;
     }
-    return [UGCBaseStrategyCell originHeight];
+    return [UGCContentStrategyCell originHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -178,9 +178,9 @@
     
     if (viewModel.model.type == UGCBaseStrategyTypeContent) {
         
-        UGCBaseStrategyCell *cell = [tableView dequeueReusableCellWithIdentifier:@"content"];
+        UGCContentStrategyCell *cell = [tableView dequeueReusableCellWithIdentifier:@"content"];
         if (!cell) {
-            cell = [[UGCBaseStrategyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"content"];
+            cell = [[UGCContentStrategyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"content"];
         }
         
         __weak typeof(cell) weakCell = cell;
@@ -299,7 +299,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    UGCBaseStrategyCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UGCContentStrategyCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (cell.isFirstResponder) {
         [cell resignFirstResponder];
     }else {

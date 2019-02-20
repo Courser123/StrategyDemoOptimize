@@ -6,14 +6,13 @@
 //  Copyright © 2019 Courser. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "UGCBaseStrategyCell.h"
 #import "UGCBaseStrategyViewModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UGCPicStrategyCell : UITableViewCell
+@interface UGCPicStrategyCell : UGCBaseStrategyCell
 
-@property (nonatomic, strong) UGCBaseStrategyViewModel *viewModel;
 @property (nonatomic, copy) void(^longPressCallBack)(UIImageView *sortView);
 
 @end

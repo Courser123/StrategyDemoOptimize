@@ -17,6 +17,8 @@
 
 @implementation UGCPicStrategyCell
 
+@synthesize viewModel = _viewModel;
+
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
