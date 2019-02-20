@@ -18,7 +18,7 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-
+        self.sortingHeight = 100;
     }
     return self;
 }

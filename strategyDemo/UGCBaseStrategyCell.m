@@ -26,7 +26,6 @@
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-//        self.backgroundColor = [UIColor grayColor];
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.showsReorderControl = NO;
         self.textView = [[UGCBaseStrategyTextView alloc] initWithFrame:self.contentView.bounds];
@@ -34,14 +33,6 @@
         self.textView.font = [UIFont systemFontOfSize:textFontSize];
         self.textView.delegate = self;
         self.textView.textColor = [UIColor blueColor];
-        __weak typeof(self) weakSelf = self;
-        self.textView.deleteBackwardCallBack = ^{
-            if (weakSelf.textView.selectedRange.location == 0 && weakSelf.textView.selectedRange.length == 0) {
-                if (weakSelf.viewModel.blendContent) {
-                    weakSelf.viewModel.blendContent(weakSelf.index, weakSelf.viewModel.lastViewModel, weakSelf.viewModel);
-                }
-            }
-        };
         [self.contentView addSubview:self.textView];
         self.currentLineNum = 1; //默认文本框显示一行文字
         self.hasRemovedObserver = NO;
@@ -58,16 +49,6 @@
 - (void)setViewModel:(UGCBaseStrategyViewModel *)viewModel {
     _viewModel = viewModel;
     self.textView.text = viewModel.model.content;
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
-    if ([text isEqualToString:@"\n"]) {
-        if (self.viewModel.splitContent) {
-            self.viewModel.splitContent(self.index, self.textView.selectedRange);
-        }
-        return YES;//这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
-    }
-    return YES;
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {

@@ -20,6 +20,8 @@
 		134B5A4621FEA928006CC05F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 134B5A4521FEA928006CC05F /* main.m */; };
 		134B5A4E21FEA951006CC05F /* UGCBaseStrategyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 134B5A4D21FEA951006CC05F /* UGCBaseStrategyViewController.m */; };
 		134B5A5121FEA9EA006CC05F /* UGCBaseStrategyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 134B5A5021FEA9EA006CC05F /* UGCBaseStrategyCell.m */; };
+		135D28E2221A50BE00FAB753 /* UGCParseTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 135D28E1221A50BE00FAB753 /* UGCParseTool.m */; };
+		135D28E8221C183100FAB753 /* UGCBaseStrategyTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135D28E7221C183100FAB753 /* UGCBaseStrategyTableView.m */; };
 		135EF5812213C04200E63DF8 /* UGCBaseStrategyViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 135EF5802213C04200E63DF8 /* UGCBaseStrategyViewModel.m */; };
 		A5A0A656E767BA749D379009 /* libPods-strategyDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4332523969305ECB6F14D1F9 /* libPods-strategyDemo.a */; };
 /* End PBXBuildFile section */
@@ -48,6 +50,10 @@
 		134B5A4D21FEA951006CC05F /* UGCBaseStrategyViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyViewController.m; sourceTree = "<group>"; };
 		134B5A4F21FEA9EA006CC05F /* UGCBaseStrategyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCBaseStrategyCell.h; sourceTree = "<group>"; };
 		134B5A5021FEA9EA006CC05F /* UGCBaseStrategyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyCell.m; sourceTree = "<group>"; };
+		135D28E0221A50BE00FAB753 /* UGCParseTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCParseTool.h; sourceTree = "<group>"; };
+		135D28E1221A50BE00FAB753 /* UGCParseTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCParseTool.m; sourceTree = "<group>"; };
+		135D28E6221C183100FAB753 /* UGCBaseStrategyTableView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCBaseStrategyTableView.h; sourceTree = "<group>"; };
+		135D28E7221C183100FAB753 /* UGCBaseStrategyTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyTableView.m; sourceTree = "<group>"; };
 		135EF57F2213C04200E63DF8 /* UGCBaseStrategyViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCBaseStrategyViewModel.h; sourceTree = "<group>"; };
 		135EF5802213C04200E63DF8 /* UGCBaseStrategyViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyViewModel.m; sourceTree = "<group>"; };
 		3701031596458EB47753D36F /* Pods-strategyDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-strategyDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-strategyDemo/Pods-strategyDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -98,12 +104,16 @@
 				135EF5802213C04200E63DF8 /* UGCBaseStrategyViewModel.m */,
 				134B5A4C21FEA951006CC05F /* UGCBaseStrategyViewController.h */,
 				134B5A4D21FEA951006CC05F /* UGCBaseStrategyViewController.m */,
+				135D28E6221C183100FAB753 /* UGCBaseStrategyTableView.h */,
+				135D28E7221C183100FAB753 /* UGCBaseStrategyTableView.m */,
 				134B5A4F21FEA9EA006CC05F /* UGCBaseStrategyCell.h */,
 				134B5A5021FEA9EA006CC05F /* UGCBaseStrategyCell.m */,
 				13077A42220197C4008B8595 /* UGCBaseStrategyTextView.h */,
 				13077A43220197C4008B8595 /* UGCBaseStrategyTextView.m */,
 				13077A3722007531008B8595 /* UGCPicStrategyCell.h */,
 				13077A3822007531008B8595 /* UGCPicStrategyCell.m */,
+				135D28E0221A50BE00FAB753 /* UGCParseTool.h */,
+				135D28E1221A50BE00FAB753 /* UGCParseTool.m */,
 				13077A3F2201421F008B8595 /* UGCFakeData.h */,
 				13077A402201421F008B8595 /* UGCFakeData.m */,
 				134B5A3C21FEA927006CC05F /* Main.storyboard */,
@@ -227,11 +237,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				13077A3922007531008B8595 /* UGCPicStrategyCell.m in Sources */,
+				135D28E2221A50BE00FAB753 /* UGCParseTool.m in Sources */,
 				13077A412201421F008B8595 /* UGCFakeData.m in Sources */,
 				134B5A3B21FEA927006CC05F /* ViewController.m in Sources */,
 				134B5A4621FEA928006CC05F /* main.m in Sources */,
 				135EF5812213C04200E63DF8 /* UGCBaseStrategyViewModel.m in Sources */,
 				13077A472202A119008B8595 /* UGCBaseStrategyModel.m in Sources */,
+				135D28E8221C183100FAB753 /* UGCBaseStrategyTableView.m in Sources */,
 				134B5A4E21FEA951006CC05F /* UGCBaseStrategyViewController.m in Sources */,
 				134B5A3821FEA927006CC05F /* AppDelegate.m in Sources */,
 				134B5A5121FEA9EA006CC05F /* UGCBaseStrategyCell.m in Sources */,

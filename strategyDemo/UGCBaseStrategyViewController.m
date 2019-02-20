@@ -11,20 +11,23 @@
 #import "UGCPicStrategyCell.h"
 #import <ReactiveObjC.h>
 #import "UGCBaseStrategyViewModel.h"
+#import "UGCParseTool.h"
+#import "UGCBaseStrategyTableView.h"
 
 // test
 #import "UGCFakeData.h"
 
 @interface UGCBaseStrategyViewController () <UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
-//@property (nonatomic, strong) NSMutableDictionary *heightDict;
+@property (nonatomic, strong) UGCBaseStrategyTableView *tableView;
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, assign) CGFloat keyboardOriginY;
 @property (nonatomic, assign) BOOL keyboardShowed;
 @property (nonatomic, assign) BOOL scrolled;
 @property (nonatomic, assign) CGFloat scrollDistance;
 @property (nonatomic, strong) UIView *tableFooterView;
+@property (nonatomic, strong) UGCParseTool *parseTool;
+@property (nonatomic, assign) BOOL isSorting;
 
 // test
 @property (nonatomic, strong) NSMutableArray <UGCBaseStrategyViewModel *>*dataSource;
@@ -39,7 +42,7 @@
     self.keyboardShowed = NO;
     self.scrolled = NO;
     self.scrollDistance = 0;
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero];
+    self.tableView = [[UGCBaseStrategyTableView alloc] initWithFrame:CGRectZero];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.contentSize = CGSizeMake(0, 10000);
@@ -54,18 +57,32 @@
     [self.view addSubview:self.tableView];
     
     [self setupNavigationBar];
+    
+    self.tableView.editing = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     // fake data
-    self.dataSource = [UGCFakeData new].modelList.mutableCopy;
-    //    self.tableView.editing = YES;
+    self.parseTool = [UGCParseTool new];
+    self.dataSource = [self.parseTool blendDataSource:[UGCFakeData new].modelList].mutableCopy;
 }
 
 - (void)setupNavigationBar {
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPic)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editMode)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemUndo target:self action:@selector(hideKeyboard)];
+}
+
+- (void)editMode {
+    self.tableView.editing = !self.tableView.isEditing;
+    if (self.tableView.isEditing) {
+        self.dataSource = [self.parseTool splitDataSource:self.dataSource.copy].mutableCopy;
+        [self.tableView reloadData];
+    }else {
+        self.dataSource = [self.parseTool blendDataSource:self.dataSource.copy].mutableCopy;
+        [self.tableView reloadData];
+    }
 }
 
 - (void)addPic {
@@ -83,11 +100,11 @@
 - (void)keyboardWillShow:(NSNotification *)noti {
     self.keyboardShowed = YES;
     CGRect rect = [[noti.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    [self.tableView beginUpdates];
-//    CGRect footerViewFrame = self.tableFooterView.frame;
-//    footerViewFrame.size.height = rect.size.height;
-//    self.tableFooterView.frame = footerViewFrame;
-//    [self.tableView endUpdates];
+    [self.tableView beginUpdates];
+    CGRect footerViewFrame = self.tableFooterView.frame;
+    footerViewFrame.size.height = rect.size.height;
+    self.tableFooterView.frame = footerViewFrame;
+    [self.tableView endUpdates];
     
     UGCBaseStrategyCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:self.currentIndex inSection:0]];
     
@@ -118,9 +135,9 @@
             [self.tableView setContentOffset:contentOffset animated:YES];
             self.scrollDistance = 0;
         }
-//        [self.tableView beginUpdates];
-//        self.tableFooterView.frame = CGRectZero;
-//        [self.tableView endUpdates];
+        [self.tableView beginUpdates];
+        self.tableFooterView.frame = CGRectZero;
+        [self.tableView endUpdates];
     }
 }
 
@@ -135,6 +152,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (self.isSorting) {
+        if ([self.dataSource objectAtIndex:indexPath.item].model.height > [self.dataSource objectAtIndex:indexPath.item].model.sortingHeight) {
+            return [self.dataSource objectAtIndex:indexPath.item].model.sortingHeight;
+        }else {
+            return [self.dataSource objectAtIndex:indexPath.item].model.height;
+        }
+    }
+    
     if (self.dataSource.count == 1 && [self.dataSource objectAtIndex:0].model.height < self.tableView.bounds.size.height) {
         return self.tableView.bounds.size.height;
     }
@@ -148,6 +173,8 @@
     
     UGCBaseStrategyViewModel *viewModel = [self.dataSource objectAtIndex:indexPath.item];
     [viewModel reset];
+
+    __weak typeof(self) weakSelf = self;
     
     if (viewModel.model.type == UGCBaseStrategyTypeContent) {
         
@@ -155,12 +182,11 @@
         if (!cell) {
             cell = [[UGCBaseStrategyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"content"];
         }
-
-        cell.index = indexPath.item;
         
-        __weak typeof(self) weakSelf = self;
         __weak typeof(cell) weakCell = cell;
         
+        cell.index = indexPath.item;
+    
         cell.viewModel = viewModel;
         
         if (indexPath.item - 1 >= 0) {
@@ -170,40 +196,6 @@
         if (indexPath.item + 1 < self.dataSource.count) {
             viewModel.nextViewModel = [self.dataSource objectAtIndex:(indexPath.item + 1)];
         }
-        
-        viewModel.blendDataSource = ^(NSInteger index, NSRange selectedRange, UGCBaseStrategyViewModel * _Nonnull lastViewModel, UGCBaseStrategyViewModel * _Nonnull currentViewModel) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
-                [tempArr replaceObjectAtIndex:(index - 1) withObject:lastViewModel];
-                [tempArr removeObjectAtIndex:index];
-                weakSelf.dataSource = tempArr.mutableCopy;
-//                [weakSelf.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//                //            [weakSelf.tableView reloadData];
-//                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index - 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//                [weakSelf.tableView setNeedsLayout];
-//                [weakSelf.tableView layoutIfNeeded];
-//                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index - 1 inSection:0]];
-//                [cell.textView becomeFirstResponder];
-//                cell.textView.selectedRange = selectedRange;
-            });
-        };
-        
-        viewModel.splitDataSource = ^(NSInteger index, NSRange selectedRange, UGCBaseStrategyViewModel * _Nonnull currentViewModel, UGCBaseStrategyViewModel * _Nonnull nextViewModel) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
-                [tempArr replaceObjectAtIndex:index withObject:currentViewModel];
-                [tempArr insertObject:nextViewModel atIndex:(index + 1)];
-                weakSelf.dataSource = tempArr.mutableCopy;
-//                [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//                //            [weakSelf.tableView reloadData];
-//                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index inSection:0],[NSIndexPath indexPathForItem:index + 1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//                [weakSelf.tableView setNeedsLayout];
-//                [weakSelf.tableView layoutIfNeeded]; // 防止visiableCells不正确
-//                UGCBaseStrategyCell *cell = [weakSelf.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:index + 1 inSection:0]];
-//                [cell.textView becomeFirstResponder];
-//                cell.textView.selectedRange = selectedRange;
-            });
-        };
         
         viewModel.addPicDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
             NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
@@ -277,9 +269,27 @@
             cell = [[UGCPicStrategyCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"pic"];
         }
         
+        __weak typeof(cell) weakCell = cell;
+        
         [self.dataSource objectAtIndex:indexPath.item].model.height = 200;
         
         cell.viewModel = viewModel;
+        
+        cell.longPressCallBack = ^(UIImageView * _Nonnull sortView) {
+            
+            CGRect sortingFrame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, sortView.frame.origin.y + sortView.frame.size.height) toView:[UIApplication sharedApplication].keyWindow];
+            weakSelf.dataSource = [weakSelf.parseTool splitDataSource:weakSelf.dataSource.copy].mutableCopy;
+            weakSelf.isSorting = YES;
+            [weakSelf.tableView reloadData];
+            [weakSelf.tableView layoutIfNeeded]; // 强制重绘保证下面的代码在reloadData完成后执行
+            weakSelf.isSorting = NO;
+            CGRect sortedFrame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, sortView.frame.origin.y + sortView.frame.size.height) toView:[UIApplication sharedApplication].keyWindow];
+            CGFloat contentOffSetY = sortedFrame.origin.y + sortedFrame.size.height - sortingFrame.origin.y - sortingFrame.size.height;
+            CGPoint contentOffset = weakSelf.tableView.contentOffset;
+            contentOffset.y += contentOffSetY;
+            [weakSelf.tableView setContentOffset:contentOffset animated:NO];
+
+        };
         
         return cell;
         
@@ -311,15 +321,19 @@
 
 // 设置 cell 是否允许移动
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.item == 0 || indexPath.item == 1) {
-        return NO;
-    }
+//    if (indexPath.item == 0 || indexPath.item == 1) {
+//        return NO;
+//    }
     return YES;
 }
+
 // 移动 cell 时触发
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     // 移动cell之后更换数据数组里的循序
     [self.dataSource exchangeObjectAtIndex:sourceIndexPath.row withObjectAtIndex:destinationIndexPath.row];
+    self.dataSource = [self.parseTool blendDataSource:self.dataSource.copy].mutableCopy;
+    self.tableFooterView.frame = CGRectZero;
+    [self.tableView reloadData];
 }
 
 - (void)dealloc {

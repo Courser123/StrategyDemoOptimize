@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UGCPicStrategyCell : UITableViewCell
 
 @property (nonatomic, strong) UGCBaseStrategyViewModel *viewModel;
+@property (nonatomic, copy) void(^longPressCallBack)(UIImageView *sortView);
 
 @end
 

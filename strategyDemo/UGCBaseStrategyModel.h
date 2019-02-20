@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) UGCBaseStrategyType type;
 @property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat sortingHeight;
 
 //UGCBaseStrategyTypeContent
 @property (nonatomic, copy) NSString *content;
