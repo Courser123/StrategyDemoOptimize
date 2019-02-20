@@ -6,9 +6,9 @@
 //  Copyright © 2019 Courser. All rights reserved.
 //
 
-#import "UGCParseTool.h"
+#import "UGCBaseStrategyParseTool.h"
 
-@interface UGCParseTool ()
+@interface UGCBaseStrategyParseTool ()
 
 @property (nonatomic, copy) NSArray *viewModelList;
 @property (nonatomic, copy) NSString *content;
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation UGCParseTool
+@implementation UGCBaseStrategyParseTool
 
 - (instancetype)init {
     if (self = [super init]) {

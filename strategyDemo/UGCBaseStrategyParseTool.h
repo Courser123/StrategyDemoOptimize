@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UGCParseTool : NSObject
+@interface UGCBaseStrategyParseTool : NSObject
 
 // 合并相连的content(文本)数据
 - (NSArray<UGCBaseStrategyViewModel *> *)blendDataSource:(NSArray <UGCBaseStrategyViewModel *> *)viewModelList;

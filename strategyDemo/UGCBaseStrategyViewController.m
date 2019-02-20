@@ -11,7 +11,7 @@
 #import "UGCPicStrategyCell.h"
 #import <ReactiveObjC.h>
 #import "UGCBaseStrategyViewModel.h"
-#import "UGCParseTool.h"
+#import "UGCBaseStrategyParseTool.h"
 #import "UGCBaseStrategyTableView.h"
 
 // test
@@ -26,7 +26,7 @@
 @property (nonatomic, assign) BOOL scrolled;
 @property (nonatomic, assign) CGFloat scrollDistance;
 @property (nonatomic, strong) UIView *tableFooterView;
-@property (nonatomic, strong) UGCParseTool *parseTool;
+@property (nonatomic, strong) UGCBaseStrategyParseTool *parseTool;
 @property (nonatomic, assign) BOOL isSorting;
 
 // test
@@ -64,7 +64,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     // fake data
-    self.parseTool = [UGCParseTool new];
+    self.parseTool = [UGCBaseStrategyParseTool new];
     self.dataSource = [self.parseTool blendDataSource:[UGCFakeData new].modelList].mutableCopy;
 }
 
