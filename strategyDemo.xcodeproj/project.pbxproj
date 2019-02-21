@@ -12,6 +12,13 @@
 		13077A412201421F008B8595 /* UGCFakeData.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A402201421F008B8595 /* UGCFakeData.m */; };
 		13077A44220197C4008B8595 /* UGCBaseStrategyTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A43220197C4008B8595 /* UGCBaseStrategyTextView.m */; };
 		13077A472202A119008B8595 /* UGCBaseStrategyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 13077A462202A119008B8595 /* UGCBaseStrategyModel.m */; };
+		1330E811221E9BCD004AA62B /* CPSDTextNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E803221E9BCD004AA62B /* CPSDTextNode.m */; };
+		1330E812221E9BCD004AA62B /* CPSDVideoNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E804221E9BCD004AA62B /* CPSDVideoNode.m */; };
+		1330E813221E9BCD004AA62B /* CPSDDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E806221E9BCD004AA62B /* CPSDDefinition.m */; };
+		1330E814221E9BCD004AA62B /* CPSDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E807221E9BCD004AA62B /* CPSDParser.m */; };
+		1330E815221E9BCD004AA62B /* CPSDCustomNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E808221E9BCD004AA62B /* CPSDCustomNode.m */; };
+		1330E816221E9BCD004AA62B /* CPSDImageNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E809221E9BCD004AA62B /* CPSDImageNode.m */; };
+		1330E817221E9BCD004AA62B /* CPSDNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1330E80C221E9BCD004AA62B /* CPSDNode.m */; };
 		134B5A3821FEA927006CC05F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 134B5A3721FEA927006CC05F /* AppDelegate.m */; };
 		134B5A3B21FEA927006CC05F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 134B5A3A21FEA927006CC05F /* ViewController.m */; };
 		134B5A3E21FEA927006CC05F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 134B5A3C21FEA927006CC05F /* Main.storyboard */; };
@@ -37,6 +44,21 @@
 		13077A43220197C4008B8595 /* UGCBaseStrategyTextView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyTextView.m; sourceTree = "<group>"; };
 		13077A452202A119008B8595 /* UGCBaseStrategyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UGCBaseStrategyModel.h; sourceTree = "<group>"; };
 		13077A462202A119008B8595 /* UGCBaseStrategyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UGCBaseStrategyModel.m; sourceTree = "<group>"; };
+		1330E802221E9BCD004AA62B /* CPSDImageNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDImageNode.h; sourceTree = "<group>"; };
+		1330E803221E9BCD004AA62B /* CPSDTextNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDTextNode.m; sourceTree = "<group>"; };
+		1330E804221E9BCD004AA62B /* CPSDVideoNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDVideoNode.m; sourceTree = "<group>"; };
+		1330E805221E9BCD004AA62B /* CPSDNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDNode.h; sourceTree = "<group>"; };
+		1330E806221E9BCD004AA62B /* CPSDDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDDefinition.m; sourceTree = "<group>"; };
+		1330E807221E9BCD004AA62B /* CPSDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDParser.m; sourceTree = "<group>"; };
+		1330E808221E9BCD004AA62B /* CPSDCustomNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDCustomNode.m; sourceTree = "<group>"; };
+		1330E809221E9BCD004AA62B /* CPSDImageNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDImageNode.m; sourceTree = "<group>"; };
+		1330E80A221E9BCD004AA62B /* CPSDTextNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDTextNode.h; sourceTree = "<group>"; };
+		1330E80B221E9BCD004AA62B /* CPSDDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDDefinition.h; sourceTree = "<group>"; };
+		1330E80C221E9BCD004AA62B /* CPSDNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPSDNode.m; sourceTree = "<group>"; };
+		1330E80D221E9BCD004AA62B /* CPSDVideoNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDVideoNode.h; sourceTree = "<group>"; };
+		1330E80E221E9BCD004AA62B /* CPSDNodeType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDNodeType.h; sourceTree = "<group>"; };
+		1330E80F221E9BCD004AA62B /* CPSDCustomNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDCustomNode.h; sourceTree = "<group>"; };
+		1330E810221E9BCD004AA62B /* CPSDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPSDParser.h; sourceTree = "<group>"; };
 		134B5A3321FEA927006CC05F /* strategyDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = strategyDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		134B5A3621FEA927006CC05F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		134B5A3721FEA927006CC05F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -76,6 +98,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1330E801221E9BCD004AA62B /* DataParse */ = {
+			isa = PBXGroup;
+			children = (
+				1330E805221E9BCD004AA62B /* CPSDNode.h */,
+				1330E80C221E9BCD004AA62B /* CPSDNode.m */,
+				1330E80B221E9BCD004AA62B /* CPSDDefinition.h */,
+				1330E806221E9BCD004AA62B /* CPSDDefinition.m */,
+				1330E802221E9BCD004AA62B /* CPSDImageNode.h */,
+				1330E809221E9BCD004AA62B /* CPSDImageNode.m */,
+				1330E80A221E9BCD004AA62B /* CPSDTextNode.h */,
+				1330E803221E9BCD004AA62B /* CPSDTextNode.m */,
+				1330E80D221E9BCD004AA62B /* CPSDVideoNode.h */,
+				1330E804221E9BCD004AA62B /* CPSDVideoNode.m */,
+				1330E80E221E9BCD004AA62B /* CPSDNodeType.h */,
+				1330E80F221E9BCD004AA62B /* CPSDCustomNode.h */,
+				1330E808221E9BCD004AA62B /* CPSDCustomNode.m */,
+				1330E810221E9BCD004AA62B /* CPSDParser.h */,
+				1330E807221E9BCD004AA62B /* CPSDParser.m */,
+			);
+			path = DataParse;
+			sourceTree = "<group>";
+		};
 		134B5A2A21FEA927006CC05F = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +163,7 @@
 				13077A3822007531008B8595 /* UGCPicStrategyCell.m */,
 				135D28E0221A50BE00FAB753 /* UGCBaseStrategyParseTool.h */,
 				135D28E1221A50BE00FAB753 /* UGCBaseStrategyParseTool.m */,
+				1330E801221E9BCD004AA62B /* DataParse */,
 				13077A3F2201421F008B8595 /* UGCFakeData.h */,
 				13077A402201421F008B8595 /* UGCFakeData.m */,
 				134B5A3C21FEA927006CC05F /* Main.storyboard */,
@@ -241,18 +286,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1330E814221E9BCD004AA62B /* CPSDParser.m in Sources */,
 				135D28EB221CF42E00FAB753 /* UGCContentStrategyCell.m in Sources */,
 				13077A3922007531008B8595 /* UGCPicStrategyCell.m in Sources */,
 				135D28E2221A50BE00FAB753 /* UGCBaseStrategyParseTool.m in Sources */,
+				1330E815221E9BCD004AA62B /* CPSDCustomNode.m in Sources */,
 				13077A412201421F008B8595 /* UGCFakeData.m in Sources */,
+				1330E812221E9BCD004AA62B /* CPSDVideoNode.m in Sources */,
+				1330E816221E9BCD004AA62B /* CPSDImageNode.m in Sources */,
 				134B5A3B21FEA927006CC05F /* ViewController.m in Sources */,
 				134B5A4621FEA928006CC05F /* main.m in Sources */,
 				135EF5812213C04200E63DF8 /* UGCBaseStrategyViewModel.m in Sources */,
 				13077A472202A119008B8595 /* UGCBaseStrategyModel.m in Sources */,
 				135D28E8221C183100FAB753 /* UGCBaseStrategyTableView.m in Sources */,
 				134B5A4E21FEA951006CC05F /* UGCBaseStrategyViewController.m in Sources */,
+				1330E811221E9BCD004AA62B /* CPSDTextNode.m in Sources */,
 				134B5A3821FEA927006CC05F /* AppDelegate.m in Sources */,
 				134B5A5121FEA9EA006CC05F /* UGCBaseStrategyCell.m in Sources */,
+				1330E817221E9BCD004AA62B /* CPSDNode.m in Sources */,
+				1330E813221E9BCD004AA62B /* CPSDDefinition.m in Sources */,
 				13077A44220197C4008B8595 /* UGCBaseStrategyTextView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
