@@ -28,7 +28,7 @@
         self.textView.bounces = NO;
         self.textView.font = [UIFont systemFontOfSize:textFontSize];
         self.textView.delegate = self;
-        self.textView.textColor = [UIColor blueColor];
+//        self.textView.textColor = [UIColor blueColor];
         [self.contentView addSubview:self.textView];
         self.currentLineNum = 1; //默认文本框显示一行文字
     }
