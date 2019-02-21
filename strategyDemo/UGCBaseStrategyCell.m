@@ -58,12 +58,12 @@
         for (UIView * view in self.subviews) {
             if ([NSStringFromClass([view class]) rangeOfString:@"Reorder"].location != NSNotFound) {
                 view.frame = CGRectMake(self.contentView.bounds.size.width - 30, self.contentView.bounds.size.height - 30, 20, 20);
+                self.sortView = view;
                 if (view.gestureRecognizers.count == 0) {
                     UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
                     gesture.cancelsTouchesInView = NO;
-                    gesture.minimumPressDuration = 0.150;
+                    gesture.minimumPressDuration = 0.5;
                     [view addGestureRecognizer:gesture];
-                    self.sortView = view;
                 }
             }
             if ([NSStringFromClass([view class]) rangeOfString:@"Edit"].location != NSNotFound) {
@@ -83,11 +83,13 @@
 
 - (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
             if (self.longPressCallBack) {
                 self.longPressCallBack(self.sortView);
             }
         });
+//        });
     }else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
         if (self.restore) {
             self.restore(YES);
