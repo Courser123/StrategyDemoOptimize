@@ -7,6 +7,7 @@
 //
 
 #import "UGCPicStrategyCell.h"
+#import "UIImageView+WebCache.h"
 
 @interface UGCPicStrategyCell ()
 
@@ -26,9 +27,15 @@
     return self;
 }
 
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self.picImageView sd_setImageWithURL:nil];
+}
+
 - (void)setViewModel:(UGCBaseStrategyViewModel *)viewModel {
     _viewModel = viewModel;
-    self.picImageView.image = ((CPSDImageNode *)viewModel.node).image;
+//    self.picImageView.image = ((CPSDImageNode *)viewModel.node).image;
+    [self.picImageView sd_setImageWithURL:[NSURL URLWithString:((CPSDImageNode *)viewModel.node).picURL]];
 }
 
 - (void)layoutSubviews {

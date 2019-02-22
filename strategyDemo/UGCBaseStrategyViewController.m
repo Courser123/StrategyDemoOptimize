@@ -59,7 +59,13 @@
     [self setupNavigationBar];
     
     self.tableView.editing = YES;
+    self.tableView.bounces = NO;
+    self.tableView.contentInset = UIEdgeInsetsMake(100, 0, 0, 0);
 
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, -100, self.view.bounds.size.width, 100)];
+    topView.backgroundColor = [UIColor blueColor];
+    [self.tableView addSubview:topView];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -284,11 +290,12 @@
             weakSelf.isSorting = YES;
             [weakSelf.tableView reloadData];
             [weakSelf.tableView layoutIfNeeded]; // 强制重绘保证下面的代码在reloadData完成后执行
+            self.proposedDestinationIndexPath = [NSIndexPath indexPathForItem:weakCell.index inSection:0];
             CGRect sortedFrame = [weakSelf.tableView convertRect:CGRectMake(weakCell.frame.origin.x, weakCell.frame.origin.y, weakCell.frame.size.width, sortView.frame.origin.y + sortView.frame.size.height) toView:[UIApplication sharedApplication].keyWindow];
             CGFloat contentOffSetY = sortedFrame.origin.y + sortedFrame.size.height - sortingFrame.origin.y - sortingFrame.size.height;
             CGPoint contentOffset = weakSelf.tableView.contentOffset;
             contentOffset.y += contentOffSetY;
-            [weakSelf.tableView setContentOffset:contentOffset animated:NO];
+//            [weakSelf.tableView setContentOffset:contentOffset animated:NO];
 
         };
         
