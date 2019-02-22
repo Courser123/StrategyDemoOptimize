@@ -18,4 +18,7 @@
 @property (nonatomic, assign) CGFloat picHeight;
 @property (nonatomic, copy) NSString *extension;
 
+// test
+@property (nonatomic, strong) UIImage *image;
+
 @end

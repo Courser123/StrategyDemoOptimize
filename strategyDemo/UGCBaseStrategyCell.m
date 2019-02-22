@@ -103,7 +103,7 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     [super setEditing: editing animated:YES];
-    if (editing && self.viewModel.model.type == UGCBaseStrategyTypeContent) {
+    if (editing && self.viewModel.node.nodeType == CPSDNodeTypeText) {
         for (UIView * view in self.subviews) {
             if ([NSStringFromClass([view class]) rangeOfString:@"Reorder"].location != NSNotFound) {
                 view.hidden = YES;

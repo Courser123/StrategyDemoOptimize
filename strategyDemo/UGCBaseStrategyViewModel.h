@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "UGCBaseStrategyModel.h"
 #import <ReactiveObjC.h>
+#import "CPSDNode.h"
+#import "CPSDTextNode.h"
+#import "CPSDImageNode.h"
+#import "CPSDVideoNode.h"
+#import "CPSDCustomNode.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -18,7 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSRange selectedRange;
 
-@property (nonatomic, strong) UGCBaseStrategyModel *model;
+//@property (nonatomic, strong) UGCBaseStrategyModel *model;
+
+@property (nonatomic, strong) CPSDNode *node;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, assign) CGFloat sortingHeight;
 
 @property (nonatomic, strong) UGCBaseStrategyViewModel *lastViewModel;
 
@@ -30,9 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void(^addPic)(NSInteger index, NSRange selectedRange, UIImage *image);
 
-@property (nonatomic, copy) void(^addPicDataSource)(NSInteger index, UGCBaseStrategyViewModel *firstModel, UGCBaseStrategyViewModel *insertModel, UGCBaseStrategyViewModel *lastModel);
+@property (nonatomic, copy) void(^addPicDataSource)(NSInteger index, UGCBaseStrategyViewModel *firstViewModel, UGCBaseStrategyViewModel *insertViewModel, UGCBaseStrategyViewModel *lastViewModel);
 
-- (instancetype)initWithStrategyModel:(UGCBaseStrategyModel *)model;
+- (instancetype)initWithNode:(CPSDNode *)node;
 
 - (void)reset;
 

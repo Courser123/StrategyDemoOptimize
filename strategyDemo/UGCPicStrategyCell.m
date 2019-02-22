@@ -28,7 +28,7 @@
 
 - (void)setViewModel:(UGCBaseStrategyViewModel *)viewModel {
     _viewModel = viewModel;
-    self.picImageView.image = viewModel.model.image;
+    self.picImageView.image = ((CPSDImageNode *)viewModel.node).image;
 }
 
 - (void)layoutSubviews {

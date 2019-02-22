@@ -147,18 +147,18 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (self.isSorting) {
-        if ([self.dataSource objectAtIndex:indexPath.item].model.height > [self.dataSource objectAtIndex:indexPath.item].model.sortingHeight) {
-            return [self.dataSource objectAtIndex:indexPath.item].model.sortingHeight;
+        if ([self.dataSource objectAtIndex:indexPath.item].height > [self.dataSource objectAtIndex:indexPath.item].sortingHeight) {
+            return [self.dataSource objectAtIndex:indexPath.item].sortingHeight;
         }else {
-            return [self.dataSource objectAtIndex:indexPath.item].model.height;
+            return [self.dataSource objectAtIndex:indexPath.item].height;
         }
     }
     
-    if (self.dataSource.count == 1 && [self.dataSource objectAtIndex:0].model.height < self.tableView.bounds.size.height) {
+    if (self.dataSource.count == 1 && [self.dataSource objectAtIndex:0].height < self.tableView.bounds.size.height) {
         return self.tableView.bounds.size.height;
     }
-    if ([self.dataSource objectAtIndex:indexPath.item].model.height) {
-        return [self.dataSource objectAtIndex:indexPath.item].model.height;
+    if ([self.dataSource objectAtIndex:indexPath.item].height) {
+        return [self.dataSource objectAtIndex:indexPath.item].height;
     }
     return [UGCContentStrategyCell originHeight];
 }
@@ -170,7 +170,7 @@
 
     __weak typeof(self) weakSelf = self;
     
-    if (viewModel.model.type == UGCBaseStrategyTypeContent) {
+    if (viewModel.node.nodeType == CPSDNodeTypeText) {
         
         UGCContentStrategyCell *cell = [tableView dequeueReusableCellWithIdentifier:@"content"];
         if (!cell) {
@@ -193,11 +193,11 @@
             viewModel.nextViewModel = [self.dataSource objectAtIndex:(indexPath.item + 1)];
         }
         
-        viewModel.addPicDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstModel, UGCBaseStrategyViewModel * _Nonnull insertModel, UGCBaseStrategyViewModel * _Nonnull lastModel) {
+        viewModel.addPicDataSource = ^(NSInteger index, UGCBaseStrategyViewModel * _Nonnull firstViewModel, UGCBaseStrategyViewModel * _Nonnull insertViewModel, UGCBaseStrategyViewModel * _Nonnull lastViewModel) {
             NSMutableArray *tempArr = weakSelf.dataSource.mutableCopy;
-            [tempArr replaceObjectAtIndex:index withObject:firstModel];
-            [tempArr insertObject:insertModel atIndex:(index + 1)];
-            [tempArr insertObject:lastModel atIndex:(index + 2)];
+            [tempArr replaceObjectAtIndex:index withObject:firstViewModel];
+            [tempArr insertObject:insertViewModel atIndex:(index + 1)];
+            [tempArr insertObject:lastViewModel atIndex:(index + 2)];
             weakSelf.dataSource = tempArr.mutableCopy;
             [weakSelf.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForItem:index + 1 inSection:0],[NSIndexPath indexPathForItem:index + 2 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [weakSelf.tableView reloadData];
@@ -208,20 +208,22 @@
         viewModel.textViewDidBeginEditing = ^(NSInteger index) {
             weakSelf.currentIndex = index;
         };
-    
-        viewModel.dispose = [RACObserve(viewModel.model, content) subscribeNext:^(NSString *content) {
+        
+        CPSDTextNode *textNode = (CPSDTextNode *)viewModel.node;
+        
+        viewModel.dispose = [RACObserve(textNode, text) subscribeNext:^(NSString *content) {
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
                 [[weakCell.textView layoutManager] ensureLayoutForTextContainer:[weakCell.textView textContainer]];
                 UIEdgeInsets insets = weakCell.textView.textContainerInset;
                 CGRect textFrame = [[weakCell.textView layoutManager] usedRectForTextContainer:[weakCell.textView textContainer]];
-                CGFloat originHeight = viewModel.model.height;
-                if (viewModel.model.height != textFrame.size.height + insets.top + insets.bottom) {
-                    viewModel.model.height = textFrame.size.height + insets.top + insets.bottom;
+                CGFloat originHeight = viewModel.height;
+                if (viewModel.height != textFrame.size.height + insets.top + insets.bottom) {
+                    viewModel.height = textFrame.size.height + insets.top + insets.bottom;
                     [weakSelf.tableView beginUpdates];
                     [weakSelf.tableView endUpdates];
                     
                     CGRect footerViewFrame = weakSelf.tableFooterView.frame;
-                    footerViewFrame.size.height += (viewModel.model.height - originHeight);
+                    footerViewFrame.size.height += (viewModel.height - originHeight);
                     weakSelf.tableFooterView.frame = footerViewFrame;
                     if (weakSelf.keyboardShowed) {
                         CGRect cursorRect = [weakCell.textView caretRectForPosition:weakCell.textView.selectedTextRange.start];
@@ -235,13 +237,13 @@
                     
                 }
             }else {
-                CGFloat originHeight = viewModel.model.height;
-                if (viewModel.model.height != weakCell.textView.contentSize.height) {
-                    viewModel.model.height = weakCell.textView.contentSize.height;
+                CGFloat originHeight = viewModel.height;
+                if (viewModel.height != weakCell.textView.contentSize.height) {
+                    viewModel.height = weakCell.textView.contentSize.height;
                     [weakSelf.tableView beginUpdates];
                     [weakSelf.tableView endUpdates];
                     CGRect footerViewFrame = weakSelf.tableFooterView.frame;
-                    footerViewFrame.size.height += (viewModel.model.height - originHeight);
+                    footerViewFrame.size.height += (viewModel.height - originHeight);
                     weakSelf.tableFooterView.frame = footerViewFrame;
                     if (weakSelf.keyboardShowed) {
                         CGRect cursorRect = [weakCell.textView caretRectForPosition:weakCell.textView.selectedTextRange.start];
@@ -258,7 +260,7 @@
         
         return cell;
         
-    }else if (viewModel.model.type == UGCBaseStrategyTypePic) {
+    }else if (viewModel.node.nodeType == CPSDNodeTypeImage) {
         
         UGCPicStrategyCell *cell = [tableView dequeueReusableCellWithIdentifier:@"pic"];
         if (!cell) {
@@ -269,7 +271,7 @@
         
         cell.index = indexPath.item;
         
-        [self.dataSource objectAtIndex:indexPath.item].model.height = 200;
+        [self.dataSource objectAtIndex:indexPath.item].height = 200;
         
         cell.sortingState = self.isSorting;
         

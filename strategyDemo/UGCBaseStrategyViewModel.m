@@ -10,39 +10,42 @@
 
 @implementation UGCBaseStrategyViewModel
 
-- (instancetype)initWithStrategyModel:(UGCBaseStrategyModel *)model {
+- (instancetype)initWithNode:(CPSDNode *)node {
     if (self = [super init]) {
-        self.model = model;
+        self.sortingHeight = 150;
+        self.node = node;
         self.selectedRange = NSMakeRange(-1, -1);
     }
     return self;
 }
 
-- (void)setModel:(UGCBaseStrategyModel *)model {
-    _model = model;
+- (void)setNode:(CPSDNode *)node {
+    _node = node;
     [self _addPic];
 }
 
 - (void)_addPic {
     __weak typeof(self) weakSelf = self;
     self.addPic = ^(NSInteger index, NSRange selectedRange, UIImage * _Nonnull image) {
-        UGCBaseStrategyViewModel *fistModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:[UGCBaseStrategyModel new]];
-        NSString *firstStr = [weakSelf.model.content substringToIndex:selectedRange.location];
-        fistModel.model.type = UGCBaseStrategyTypeContent;
-        fistModel.model.content = firstStr;
+        CPSDTextNode *firstTextNode = [CPSDTextNode new];
+        firstTextNode.nodeType = CPSDNodeTypeText;
+        firstTextNode.text = [((CPSDTextNode *)weakSelf.node).text substringToIndex:selectedRange.location];
+        UGCBaseStrategyViewModel *firstViewModel = [[UGCBaseStrategyViewModel alloc] initWithNode:firstTextNode];
         
-        UGCBaseStrategyViewModel *viewModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:[UGCBaseStrategyModel new]];
-        viewModel.model.type = UGCBaseStrategyTypePic;
-        viewModel.model.image = image;
+        CPSDImageNode *imageNode = [CPSDImageNode new];
+        imageNode.nodeType = CPSDNodeTypeImage;
+        imageNode.image = image;
+        UGCBaseStrategyViewModel *viewModel = [[UGCBaseStrategyViewModel alloc] initWithNode:imageNode];
         
-        UGCBaseStrategyViewModel *lastModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:[UGCBaseStrategyModel new]];
-        NSString *lastStr = [weakSelf.model.content substringFromIndex:selectedRange.location];
-        lastModel.model.type = UGCBaseStrategyTypeContent;
-        lastModel.model.content = lastStr;
+        CPSDTextNode *lastTextNode = [CPSDTextNode new];
+        lastTextNode.nodeType = CPSDNodeTypeText;
+        lastTextNode.text = [((CPSDTextNode *)weakSelf.node).text substringFromIndex:selectedRange.location];
+        UGCBaseStrategyViewModel *lastViewModel = [[UGCBaseStrategyViewModel alloc] initWithNode:lastTextNode];
         
         if (weakSelf.addPicDataSource) {
-            weakSelf.addPicDataSource(index, fistModel, viewModel, lastModel);
+            weakSelf.addPicDataSource(index, firstViewModel, viewModel, lastViewModel);
         }
+        
     };
 }
 

@@ -43,7 +43,7 @@
 
 - (void)setViewModel:(UGCBaseStrategyViewModel *)viewModel {
     _viewModel = viewModel;
-    self.textView.text = viewModel.model.content;
+    self.textView.text = ((CPSDTextNode *)viewModel.node).text;
 }
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
@@ -63,7 +63,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView {
     
-    self.viewModel.model.content = textView.text;
+    ((CPSDTextNode *)self.viewModel.node).text = textView.text;
     
     if (self.viewModel.getCursorRect) {
         

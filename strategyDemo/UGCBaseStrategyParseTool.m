@@ -34,14 +34,14 @@
     for (int idx = 0; idx < self.viewModelList.count; idx++) {
         if (idx < self.index) continue;
         UGCBaseStrategyViewModel *viewModel = [self.viewModelList objectAtIndex:idx];
-        if (viewModel.model.type == UGCBaseStrategyTypeContent) {
+        if (viewModel.node.nodeType == CPSDNodeTypeText) {
             self.index = idx + 1;
-            self.content = viewModel.model.content ? : @"";
+            self.content = ((CPSDTextNode *)viewModel.node).text ? : @"";
             [self recursionBlendDataSource];
-            UGCBaseStrategyModel *model = [UGCBaseStrategyModel new];
-            model.type = UGCBaseStrategyTypeContent;
-            model.content = self.content;
-            UGCBaseStrategyViewModel *tempViewModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:model];
+            CPSDTextNode *textNode = [CPSDTextNode new];
+            textNode.nodeType = CPSDNodeTypeText;
+            textNode.text = self.content;
+            UGCBaseStrategyViewModel *tempViewModel = [[UGCBaseStrategyViewModel alloc] initWithNode:textNode];
             [tempArray addObject:tempViewModel];
             self.content = nil;
         }else {
@@ -56,14 +56,14 @@
     NSMutableArray *tempArray = [NSMutableArray array];
     for (int idx = 0; idx < self.viewModelList.count; idx++) {
         UGCBaseStrategyViewModel *viewModel = [self.viewModelList objectAtIndex:idx];
-        if (viewModel.model.type == UGCBaseStrategyTypeContent) {
-            [self recursionSplitDataSourceWith:viewModel.model.content];
+        if (viewModel.node.nodeType == CPSDNodeTypeText) {
+            [self recursionSplitDataSourceWith:((CPSDTextNode *)viewModel.node).text];
             if (self.contentList.count) {
                 [self.contentList enumerateObjectsUsingBlock:^(NSString * _Nonnull content, NSUInteger idx, BOOL * _Nonnull stop) {
-                    UGCBaseStrategyModel *model = [UGCBaseStrategyModel new];
-                    model.type = UGCBaseStrategyTypeContent;
-                    model.content = content;
-                    UGCBaseStrategyViewModel *tempViewModel = [[UGCBaseStrategyViewModel alloc] initWithStrategyModel:model];
+                    CPSDTextNode *textNode = [CPSDTextNode new];
+                    textNode.nodeType = CPSDNodeTypeText;
+                    textNode.text = content;
+                    UGCBaseStrategyViewModel *tempViewModel = [[UGCBaseStrategyViewModel alloc] initWithNode:textNode];
                     [tempArray addObject:tempViewModel];
                 }];
                 self.contentList = [NSMutableArray array];
@@ -80,9 +80,9 @@
 - (void)recursionBlendDataSource {
     if (self.index >= self.viewModelList.count) return;
     UGCBaseStrategyViewModel *viewModel = [self.viewModelList objectAtIndex:self.index];
-    if (viewModel.model.type == UGCBaseStrategyTypeContent) {
+    if (viewModel.node.nodeType == CPSDNodeTypeText) {
         self.content = [self.content stringByAppendingString:@"\n"];
-        self.content = [self.content stringByAppendingString:viewModel.model.content];
+        self.content = [self.content stringByAppendingString:((CPSDTextNode *)viewModel.node).text];
         self.index ++;
         [self recursionBlendDataSource];
     }else {
